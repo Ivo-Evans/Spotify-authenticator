@@ -5,10 +5,11 @@ const { deflate, unzip } = require("zlib")
 const fs = require("fs")
 
 dotenv.config()
+const port = process.env.PORT
+const credentials = process.env.CREDENTIALS
 
 
 const server = express()
-const credentials = process.env.CREDENTIALS
 const url = "https://accounts.spotify.com/api/token"
 const options = {
     method: "POST",
@@ -21,11 +22,12 @@ const options = {
 }
 
 
+
 server.get('/', (req, res, next) => {
     fetch(url, options) 
     .then(fetchRes => {
         if (fetchRes.status !== 200) {
-            console.log(POST REQUEST TO SPOTIFY FAILED)
+            console.log("POST REQUEST TO SPOTIFY FAILED")
             console.log({url, options, fetchRes})
             res.send(418).send("Spotify does not like your request. I don't know why. I am only a teapot after all. Here is their status code: ", fetchRes.status)
         }
@@ -50,4 +52,4 @@ server.get('/', (req, res, next) => {
   // on frontend, if exp has passed, send another request back here
 })
 
-server.listen(3000, () => {console.log('listening on http://localhost:3000')})
+server.listen(port, () => {console.log('listening on http://localhost:' + port)})
