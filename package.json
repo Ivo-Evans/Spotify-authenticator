@@ -4,6 +4,7 @@
   "description": "Make API request to get auth tokens",
   "main": "index.js",
   "scripts": {
+    "go": "/server.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
@@ -11,6 +12,7 @@
   "dependencies": {
     "dotenv": "^8.2.0",
     "express": "^4.17.1",
+    "node-fetch": "^2.6.0",
     "request": "^2.88.2"
   },
   "devDependencies": {
