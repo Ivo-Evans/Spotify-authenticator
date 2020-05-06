@@ -1,8 +1,7 @@
 const express = require("express")
 const dotenv = require("dotenv")
 const fetch = require("node-fetch")
-const { deflate, unzip } = require("zlib")
-const fs = require("fs")
+
 
 dotenv.config()
 const port = process.env.PORT
