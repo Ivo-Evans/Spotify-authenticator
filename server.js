@@ -1,6 +1,8 @@
 const express = require("express")
 const dotenv = require("dotenv")
 const fetch = require("node-fetch")
+const { deflate, unzip } = require("zlib")
+const fs = require("fs")
 
 dotenv.config()
 
@@ -18,13 +20,26 @@ const options = {
     body: "grant_type=client_credentials"
 }
 
+// const options = {
+//     method: "POST",
+//     headers: {
+//         "content-type": "application/x-www-form-urlencoded",
+//         "Authorization": "Basic OGRiYzE2ZTNiOWI1NGFmOTlkODgxMTIxOTQ1NmI5NDA6YzNlODQ3MjRkZDFhNDRiOWEyOGQzMTBjNThhZWM4Y2U="
+//     },
+//     body: "grant_type=client_credentials"
+// }
+
 
 server.get('/', (req, res, next) => {
     fetch(url, options) 
     .then(fetchRes => {
-        console.log(fetchRes)
-        // fetchRes.access_token   
-        // send it out as a JWT with an exp to be stored in a cookie
+        let body = ""
+        fetchRes.body.on('data', data => body += data)
+        fetchRes.body.on('end', () => {
+            const intendedResponse = JSON.parse(body)
+            console.log(intendedResponse)
+            res.end()
+        })
     })
 
 
