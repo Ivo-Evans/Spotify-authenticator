@@ -20,26 +20,30 @@ const options = {
     body: "grant_type=client_credentials"
 }
 
-// const options = {
-//     method: "POST",
-//     headers: {
-//         "content-type": "application/x-www-form-urlencoded",
-//         "Authorization": "Basic OGRiYzE2ZTNiOWI1NGFmOTlkODgxMTIxOTQ1NmI5NDA6YzNlODQ3MjRkZDFhNDRiOWEyOGQzMTBjNThhZWM4Y2U="
-//     },
-//     body: "grant_type=client_credentials"
-// }
-
 
 server.get('/', (req, res, next) => {
     fetch(url, options) 
     .then(fetchRes => {
+        if (fetchRes.status !== 200) {
+            console.log(POST REQUEST TO SPOTIFY FAILED)
+            console.log({url, options, fetchRes})
+            res.send(418).send("Spotify does not like your request. I don't know why. I am only a teapot after all. Here is their status code: ", fetchRes.status)
+        }
         let body = ""
         fetchRes.body.on('data', data => body += data)
         fetchRes.body.on('end', () => {
             const intendedResponse = JSON.parse(body)
-            console.log(intendedResponse)
-            res.end()
+            const anHourFromNow = Math.floor(new Date() / 1000) + 3600
+
+            res.status(200).send({
+                access_token: intendedResponse.access_token,
+                exp: anHourFromNow
+            })
         })
+    })
+    .catch(err => {
+        console.log(err)
+        res.status(500).send("Server error")
     })
 
 
