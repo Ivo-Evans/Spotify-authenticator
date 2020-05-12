@@ -1,7 +1,7 @@
 const express = require("express")
 const dotenv = require("dotenv")
 const fetch = require("node-fetch")
-
+const cors = require("cors")
 
 dotenv.config()
 const port = process.env.PORT
@@ -21,6 +21,7 @@ const options = {
 }
 
 
+server.use(cors()) // TODO: restrict cors
 
 server.get('/', (req, res, next) => {
     fetch(url, options) 
